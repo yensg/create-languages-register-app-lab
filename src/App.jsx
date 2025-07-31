@@ -1,10 +1,16 @@
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import React from "react";
+import LanguageDisplay from "./components/LanguageDisplay";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div>
-      <h2>GA SEB</h2>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="container border border-primary">
+        <LanguageDisplay />
+      </div>
+    </QueryClientProvider>
   );
 }
 
