@@ -3,8 +3,8 @@ import React from "react";
 
 const LanguageList = (props) => {
   const queryClient = useQueryClient();
+
   const deleteData = async () => {
-    //why i cant put it here?
     const res = await fetch(
       import.meta.env.VITE_SERVER + "/lab/languages/" + props.language,
       {

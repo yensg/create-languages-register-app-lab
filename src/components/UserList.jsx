@@ -46,7 +46,7 @@ const UserList = (props) => {
 
   // why i cant get the each user's languages out? id 7 has 2, but the rest should be empty
   const query = useQuery({
-    queryKey: ["userLanguages", props.id], // need the 2nd parameters? Previous one we use state to change part of the url under loading spinner
+    queryKey: ["userLanguages", props.id], // Qn 2: need the 2nd parameters? Previous one we use state to change part of the url under loading spinner
     queryFn: getUserLanguages,
   });
 
@@ -54,7 +54,7 @@ const UserList = (props) => {
     setNewUserLanguage(event.target.value);
   };
 
-  // why i cant add any normal languages? And why after updating the total language then can add to user?
+  // Qn 3:  why i cant add any normal languages? And why after updating the total language then can add to user?
   const addUserLanguage = async () => {
     const res = await fetch(
       import.meta.env.VITE_SERVER + "/lab/users/languages",
@@ -86,7 +86,7 @@ const UserList = (props) => {
 
   return (
     <>
-      {/* {updateModal && ( //like that doesnt re-render the screen why?
+      {/* {updateModal && ( // Qn 4: like that doesnt re-render the screen why?
         <UpdateModal id={props.id} setUpdateModal={setUpdateModal} />
       )} */}
       {updateModal && <Overlay id={props.id} setUpdateModal={setUpdateModal} />}

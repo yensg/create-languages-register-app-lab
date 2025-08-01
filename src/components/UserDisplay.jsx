@@ -30,7 +30,7 @@ const UserDisplay = () => {
       body: JSON.stringify({
         name: newUser,
         // age: 0,
-        // country: "", //why error? how to do the optional?
+        // country: "", // Qn 1: why error? how to do the optional?
       }),
     });
     if (!res.ok) {
@@ -43,7 +43,7 @@ const UserDisplay = () => {
     mutationFn: addUser,
     onSuccess: () => {
       setNewUser(""), queryClient.invalidateQueries(["users"]);
-      queryClient.invalidateQueries(["userLanguages"]); //why this doest work?
+      queryClient.invalidateQueries(["userLanguages"]);
     },
   });
 

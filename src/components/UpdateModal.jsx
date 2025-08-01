@@ -2,7 +2,7 @@ import styles from "./UpdateModal.module.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-// why no need client?
+// Qn 5: why no need client?
 
 const UpdateModal = (props) => {
   const queryClient = useQueryClient();
@@ -66,6 +66,7 @@ const UpdateModal = (props) => {
 
 // export default UpdateModal;
 
+// Qn 6: So we linking from UserList => Overlay(creating new page?) => display the modal component in this new page
 const Overlay = (props) => {
   return (
     <div>
