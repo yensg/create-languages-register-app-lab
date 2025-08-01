@@ -1,30 +1,54 @@
 import React, { useState } from "react";
 import LanguageList from "./LanguageList";
-import useFetchLanguage from "../hook/useFetchLanguage";
-import { useMutation } from "@tanstack/react-query";
+// import useFetchLanguage from "../hook/useFetchLanguage";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const LanguageDisplay = () => {
-  const [query, queryClient, addData, deleteData] = useFetchLanguage();
   const [newLang, setNewLang] = useState("");
+  const queryClient = useQueryClient();
 
+  // Fetch data
+  const getData = async () => {
+    const res = await fetch(import.meta.env.VITE_SERVER + "/lab/languages");
+    if (!res.ok) {
+      throw new Error("error getting data");
+    }
+    return await res.json();
+  };
+
+  // Log lang useQuery's run under queryKey
+  const query = useQuery({
+    queryKey: ["lang"],
+    queryFn: getData,
+  });
+
+  // Update newLang useState via input
   const addNewLang = (event) => {
     setNewLang(event.target.value);
   };
 
-  const submitNewLang = () => {
-    addData(newLang);
-    setNewLang("");
-    queryClient.invalidateQueries(["lang"]);
+  // Transmit data to server and update the new lang. Not via argument but by global scope.
+  const addData = async () => {
+    const res = await fetch(import.meta.env.VITE_SERVER + "/lab/languages", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        language: newLang,
+      }),
+    });
+    if (!res.ok) {
+      throw new Error("error adding language");
+    }
   };
 
-  const deleteLang = (item) => {
-    deleteData(item);
-    queryClient.invalidateQueries(["lang"]);
-  };
-  // why cant delete?
-
-  // When is my fetch ran? upon using query?
-  // why query.isSuccess will resolve the promise?
+  // To refresh the display by invalidate lang useQuery batch and rerun again.
+  const mutation = useMutation({
+    mutationFn: addData,
+    onSuccess: () => {
+      setNewLang("");
+      queryClient.invalidateQueries(["lang"]);
+    },
+  });
 
   return (
     <>
@@ -37,23 +61,16 @@ const LanguageDisplay = () => {
           onChange={addNewLang}
           value={newLang}
         ></input>
-        <button className="col-sm-2" onClick={submitNewLang}>
+        <button className="col-sm-2" onClick={mutation.mutate}>
           Add
         </button>
         {newLang}
       </div>
       <div className="container border border-success">
-        {query.isSuccess &&
+        {query.isSuccess && //res.json
           query.data.map((item, idx) => {
-            return (
-              <LanguageList
-                deleteLang={deleteLang}
-                key={idx}
-                language={item.language}
-              />
-            );
+            return <LanguageList key={idx} language={item.language} />;
           })}
-        {/* {JSON.stringify(query)} */}
       </div>
     </>
   );
