@@ -53,18 +53,19 @@ const LanguageDisplay = () => {
   return (
     <>
       <div className="container border border-danger">
-        <label className="col-sm-2">New Language</label>
-        <input
-          className="col-sm-8"
-          type="text"
-          placeholder="New Language"
-          onChange={addNewLang}
-          value={newLang}
-        ></input>
-        <button className="col-sm-2" onClick={mutation.mutate}>
-          Add
-        </button>
-        {newLang}
+        <div className="row">
+          <label className="col-sm-2">New Language</label>
+          <input
+            className="col-sm-8"
+            type="text"
+            placeholder="New Language"
+            onChange={addNewLang}
+            value={newLang}
+          ></input>
+          <button className="col-sm-2" onClick={mutation.mutate}>
+            Add
+          </button>
+        </div>
       </div>
       <div className="container border border-success">
         {query.isSuccess && //res.json

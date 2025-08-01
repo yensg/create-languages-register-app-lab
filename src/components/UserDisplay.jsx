@@ -43,6 +43,7 @@ const UserDisplay = () => {
     mutationFn: addUser,
     onSuccess: () => {
       setNewUser(""), queryClient.invalidateQueries(["users"]);
+      queryClient.invalidateQueries(["userLanguages"]); //why this doest work?
     },
   });
 
@@ -61,7 +62,7 @@ const UserDisplay = () => {
           Add
         </button>
       </div>
-      {query.isSuccess && //as long as we use query, we must use this? mutation no need?
+      {query.isSuccess && //as long as we use query, we must use this? yes we need to use this. mutation no need? need via the onSuccess
         query.data.map((user, id) => {
           return (
             <UserList key={user.id} id={user.id} name={user.name}></UserList>
